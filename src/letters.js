@@ -49,6 +49,7 @@ ${consumerName}`;
 }
 
 function creditorOf(e) {
+  if (e.creditor) return e.creditor;
   // prefer explicit creditor value stored on any evidence entry
   const credEv = e.evidence.find(x => x.field === 'creditor');
   if (credEv?.value) return credEv.value;
