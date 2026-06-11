@@ -1,118 +1,1027 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARSEUR 10X v2 Engine | Verifiable Credit Report Analysis Demo</title>
-<meta name="description" content="Research prototype: verifiable AI credit report analysis with span-grounded extraction, cross-bureau entity resolution, and FCRA error detection.">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GitPortal</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23238636'/%3E%3Cpath fill='%23fff' d='M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12c0-5.523-4.477-10-10-10z'/%3E%3C/svg%3E" />
 <style>
-  :root { --bg:#0b0d10; --panel:#13161b; --line:#23282f; --ink:#e8e6e1; --dim:#9aa3ad; --gold:#d4a843; --green:#5dbb7f; --red:#e06c5c; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--ink); font-family:Georgia,'Times New Roman',serif; line-height:1.6; }
-  .wrap { max-width:1080px; margin:0 auto; padding:48px 20px; }
-  h1 { font-size:2rem; letter-spacing:.5px; }
-  h1 span { color:var(--gold); }
-  .sub { color:var(--dim); margin:8px 0 32px; font-style:italic; }
-  .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-  @media (max-width:820px){ .grid{ grid-template-columns:1fr; } }
-  textarea { width:100%; height:220px; background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:12px; font-family:ui-monospace,Menlo,monospace; font-size:12px; resize:vertical; }
-  label { display:block; font-size:.8rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--dim); margin:0 0 6px; }
-  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin:22px 0; }
-  button { background:var(--gold); color:#161616; border:0; border-radius:8px; padding:12px 22px; font-size:1rem; font-weight:bold; cursor:pointer; font-family:inherit; }
-  button.ghost { background:transparent; color:var(--gold); border:1px solid var(--gold); }
-  input[type=password] { background:var(--panel); border:1px solid var(--line); color:var(--ink); border-radius:8px; padding:11px 12px; min-width:280px; }
-  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:20px; margin:14px 0; }
-  .stat { display:inline-block; margin-right:26px; }
-  .stat b { color:var(--gold); font-size:1.3rem; }
-  .err { border-left:3px solid var(--red); padding:12px 16px; margin:12px 0; background:#171217; border-radius:0 8px 8px 0; }
-  .err h4 { color:var(--red); font-size:.85rem; letter-spacing:1.5px; }
-  .ev { font-family:ui-monospace,Menlo,monospace; font-size:11.5px; color:var(--dim); margin-top:6px; }
-  .ev em { color:var(--green); font-style:normal; }
-  .conf { float:right; color:var(--dim); font-size:.8rem; }
-  pre.letter { white-space:pre-wrap; font-family:ui-monospace,Menlo,monospace; font-size:12px; background:#0e1013; border:1px solid var(--line); border-radius:8px; padding:16px; max-height:340px; overflow:auto; }
-  .note { color:var(--dim); font-size:.85rem; }
-  .tag { display:inline-block; border:1px solid var(--line); border-radius:99px; padding:2px 10px; font-size:.72rem; color:var(--dim); margin-left:8px; vertical-align:middle; }
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --accent: #238636; --accent-hover: #2ea043; --danger: #da3633;
+    --text: #e6edf3; --muted: #8b949e;
+    --new: #3fb950; --modified: #d29922; --deleted: #f85149; --renamed: #58a6ff; --purple: #a371f7;
+    --netlify: #00ad9f; --railway: #B847F5; --telegram: #229ED9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 16px; height: 52px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo { font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .repo-selector { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 6px 10px; border-radius: 6px; font-size: 13px; min-width: 200px; cursor: pointer; }
+  .repo-selector:focus { outline: none; border-color: var(--accent); }
+  .branch-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px; cursor: pointer; }
+  .branch-badge:hover { border-color: var(--purple); color: var(--purple); }
+  .spacer { flex: 1; }
+  .user-pill { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .user-pill img { width: 24px; height: 24px; border-radius: 50%; }
+  .btn { border: none; border-radius: 6px; padding: 6px 14px; font-size: 13px; cursor: pointer; font-weight: 500; transition: all .15s; display: inline-flex; align-items: center; gap: 5px; }
+  .btn-green { background: var(--accent); color: #fff; } .btn-green:hover { background: var(--accent-hover); }
+  .btn-blue { background: #1f6feb; color: #fff; } .btn-blue:hover { background: #388bfd; }
+  .btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); } .btn-ghost:hover { background: var(--border); }
+  .btn-netlify { background: #00ad9f22; color: var(--netlify); border: 1px solid #00ad9f44; } .btn-netlify:hover { background: #00ad9f33; }
+  .btn-vercel { background: #ffffff15; color: #fff; border: 1px solid #ffffff30; } .btn-vercel:hover { background: #ffffff25; }
+  .btn-railway { background: #B847F522; color: var(--railway); border: 1px solid #B847F544; } .btn-railway:hover { background: #B847F533; }
+  .btn-telegram { background: #229ED922; color: var(--telegram); border: 1px solid #229ED944; } .btn-telegram:hover { background: #229ED933; }
+  .connected-telegram { background: #229ED922; color: var(--telegram); border: 1px solid #229ED944; }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  .main { display: flex; flex: 1; overflow: hidden; }
+  .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+  .sidebar-section { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .sidebar-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 6px; font-weight: 600; }
+  .file-list { overflow-y: auto; flex: 1; }
+  .file-item { display: flex; align-items: center; gap: 8px; padding: 7px 12px; cursor: pointer; transition: background .1s; }
+  .file-item:hover { background: var(--surface2); }
+  .file-item.selected { background: #1f6feb22; }
+  .file-item input[type=checkbox] { accent-color: var(--accent); width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+  .file-name { flex: 1; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .badge { font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: 600; flex-shrink: 0; }
+  .badge-new { background: #3fb95022; color: var(--new); border: 1px solid #3fb95044; }
+  .badge-modified { background: #d2992222; color: var(--modified); border: 1px solid #d2992244; }
+  .badge-deleted { background: #f8514922; color: var(--deleted); border: 1px solid #f8514944; }
+  .badge-renamed { background: #58a6ff22; color: var(--renamed); border: 1px solid #58a6ff44; }
+
+  .panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .panel-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+  .tab { padding: 10px 18px; font-size: 13px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: all .15s; }
+  .tab:hover { color: var(--text); } .tab.active { color: var(--text); border-bottom-color: #f78166; }
+  .panel-body { flex: 1; overflow-y: auto; padding: 20px; }
+
+  .diff-header { font-size: 12px; color: var(--muted); margin-bottom: 12px; padding: 8px 12px; background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); }
+  .diff-code { font-family: 'SF Mono', monospace; font-size: 12px; line-height: 1.6; }
+  .diff-line { padding: 1px 12px; white-space: pre-wrap; word-break: break-all; }
+  .diff-add { background: #3fb95015; color: var(--new); }
+  .diff-remove { background: #f8514915; color: var(--deleted); }
+  .diff-hunk { background: #58a6ff10; color: #58a6ff; font-style: italic; }
+
+  /* DEPLOY BAR */
+  .deploy-bar { padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--border); display: none; gap: 10px; align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+  .deploy-bar.visible { display: flex; }
+  .deploy-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; flex: 1; min-width: 200px; }
+  .platform-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+  .netlify-card .platform-label { color: var(--netlify); }
+  .vercel-card .platform-label { color: #fff; }
+  .railway-card .platform-label { color: var(--railway); }
+  .deploy-status { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .status-ready { background: #3fb95022; color: var(--new); border: 1px solid #3fb95044; }
+  .status-building { background: #d2992222; color: var(--modified); border: 1px solid #d2992244; animation: pulse 1.5s infinite; }
+  .status-error { background: #f8514922; color: var(--deleted); border: 1px solid #f8514944; }
+  .status-unknown { background: var(--border); color: var(--muted); }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.5} }
+  .deploy-url { font-size: 11px; color: #58a6ff; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px; }
+  .deploy-url:hover { text-decoration: underline; }
+  .deploy-spacer { flex: 1; }
+
+  /* RAILWAY LOG VIEWER */
+  .log-viewer { background: #000; border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-family: 'SF Mono', monospace; font-size: 11px; line-height: 1.7; height: 300px; overflow-y: auto; margin-top: 12px; }
+  .log-line { display: flex; gap: 8px; }
+  .log-time { color: #555; flex-shrink: 0; }
+  .log-msg { color: #e6edf3; word-break: break-all; }
+  .log-error { color: var(--deleted); }
+  .log-warn { color: var(--modified); }
+
+  /* RAILWAY SERVICES LIST */
+  .railway-project { margin-bottom: 16px; }
+  .railway-project-name { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 8px; font-weight: 600; padding: 0 4px; }
+  .railway-service-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; cursor: pointer; transition: border-color .15s; }
+  .railway-service-item:hover { border-color: var(--railway); }
+  .railway-service-name { flex: 1; font-size: 13px; font-weight: 500; }
+  .railway-service-time { font-size: 11px; color: var(--muted); }
+
+  /* COMMIT PANEL */
+  .commit-panel { padding: 14px 16px; background: var(--surface); border-top: 1px solid var(--border); flex-shrink: 0; }
+  .commit-panel textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 10px; font-size: 13px; resize: none; height: 68px; font-family: inherit; line-height: 1.5; }
+  .commit-panel textarea:focus { outline: none; border-color: var(--accent); }
+  .commit-panel textarea::placeholder { color: var(--muted); }
+  .commit-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .push-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; }
+  .push-toggle input { accent-color: var(--accent); }
+  .select-all-row { display: flex; align-items: center; gap: 6px; padding: 8px 12px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); cursor: pointer; }
+  .select-all-row:hover { background: var(--surface2); }
+
+  .commit-log-item { padding: 12px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: flex-start; }
+  .commit-log-item:hover { background: var(--surface2); }
+  .commit-hash { font-family: monospace; font-size: 11px; color: var(--purple); background: var(--surface2); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .commit-subject { font-size: 13px; }
+  .commit-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .settings-section { margin-bottom: 24px; }
+  .settings-section h3 { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .settings-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .settings-row input { flex: 1; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 10px; border-radius: 6px; font-size: 13px; font-family: monospace; }
+  .settings-row input:focus { outline: none; border-color: var(--accent); }
+  .connected-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
+  .connected-netlify { background: #00ad9f22; color: var(--netlify); border: 1px solid #00ad9f44; }
+  .connected-vercel { background: #ffffff15; color: #fff; border: 1px solid #ffffff30; }
+  .connected-github { background: #a371f722; color: var(--purple); border: 1px solid #a371f744; }
+  .connected-railway { background: #B847F522; color: var(--railway); border: 1px solid #B847F544; }
+
+  .link-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; }
+  .link-item:hover { background: var(--surface2); }
+  .link-item-name { font-weight: 500; }
+  .link-item-url { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; width: 480px; max-width: 95vw; max-height: 85vh; overflow-y: auto; }
+  .modal h2 { font-size: 16px; margin-bottom: 16px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  .form-group input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 8px 10px; border-radius: 6px; font-size: 13px; }
+  .form-group input:focus { outline: none; border-color: var(--accent); }
+  .form-group .hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+  .toggle { position: relative; width: 36px; height: 20px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 20px; cursor: pointer; transition: .2s; }
+  .toggle-slider:before { content: ''; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+  .toggle input:checked + .toggle-slider { background: var(--accent); }
+  .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+  .toast-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 999; }
+  .toast { padding: 10px 16px; border-radius: 8px; font-size: 13px; color: #fff; min-width: 220px; animation: slideIn .2s ease; box-shadow: 0 4px 12px rgba(0,0,0,.4); }
+  .toast-success { background: #238636; } .toast-error { background: #da3633; } .toast-info { background: #1f6feb; }
+  @keyframes slideIn { from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1} }
+
+  #setup-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 200; }
+  .setup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 36px; width: 440px; text-align: center; }
+  .setup-card h1 { font-size: 22px; margin-bottom: 6px; }
+  .setup-card p { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.6; }
+  .setup-card input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 12px; font-family: monospace; }
+  .setup-card a { color: #58a6ff; font-size: 12px; }
+
+  .loading { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .ahead-badge { background: var(--modified); color: #000; border-radius: 10px; font-size: 10px; padding: 1px 7px; font-weight: 700; }
+  .no-repo { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 16px; color: var(--muted); text-align: center; padding: 40px; }
+  .no-repo h3 { color: var(--text); font-size: 16px; }
+  .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--muted); gap: 12px; text-align: center; }
+  .empty-state p { font-size: 13px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>PARSEUR <span>10X</span> v2 Engine <span class="tag">research prototype</span></h1>
-  <p class="sub">Span-grounded extraction. Cross-bureau entity resolution. FCRA error detection. Every claim traceable to the source document.</p>
 
-  <div class="grid">
-    <div><label>Equifax report text</label><textarea id="eq"></textarea></div>
-    <div><label>Experian report text</label><textarea id="ex"></textarea></div>
-    <div><label>TransUnion report text</label><textarea id="tu"></textarea></div>
+<div id="setup-screen" style="display:none">
+  <div class="setup-card">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="currentColor" style="margin-bottom:16px"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    <h1>Welcome to GitPortal</h1>
+    <p>Connect your GitHub account to get started.</p>
+    <input type="password" id="setup-token" placeholder="ghp_xxxxxxxxxxxxxxxx" />
+    <p style="margin-bottom:16px"><a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">→ Generate a token on GitHub</a></p>
+    <button class="btn btn-green" style="width:100%;padding:10px;justify-content:center" onclick="saveToken()">Connect GitHub Account</button>
   </div>
-
-  <div class="row">
-    <button id="run">Analyze Reports</button>
-    <button class="ghost" id="sample">Load Synthetic Sample</button>
-    <input type="password" id="key" placeholder="OpenRouter API key (optional, enables LLM mode)">
-    <span class="note">No key = deterministic structure-detection mode, runs fully in your browser. Nothing is uploaded anywhere.</span>
-  </div>
-
-  <div id="out"></div>
 </div>
 
-<script type="module">
-import { analyzeReports } from '../src/engine.js';
-import { generateDocumentSet, setSeed } from '../test/synthetic.js';
+<div class="topbar">
+  <div class="logo">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    GitPortal
+  </div>
+  <select id="repo-select" class="repo-selector" onchange="selectRepo(this.value)">
+    <option value="">— Select a repository —</option>
+  </select>
+  <div class="branch-badge" onclick="showBranchModal()" id="branch-display" style="display:none">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Z"/></svg>
+    <span id="branch-name">main</span>
+    <span id="ahead-badge" style="display:none" class="ahead-badge"></span>
+  </div>
+  <button class="btn btn-ghost btn-sm" onclick="showPullConfirm()" id="pull-btn" style="display:none">↓ Pull</button>
+  <div class="spacer"></div>
+  <button class="btn btn-ghost btn-sm" onclick="showAddRepoModal()">+ Add Repo</button>
+  <button class="btn btn-blue btn-sm" onclick="showNewRepoModal()">✦ New Repo</button>
+  <button class="btn btn-ghost btn-sm" onclick="switchTab('settings')" title="Settings">⚙</button>
+  <div class="user-pill" id="user-pill" style="display:none">
+    <img id="user-avatar" src="" alt=""/><span id="user-login"></span>
+  </div>
+</div>
 
-const $ = (id) => document.getElementById(id);
-let lastSample = null;
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-section"><div class="sidebar-label">Changed Files</div></div>
+    <div class="select-all-row" onclick="toggleSelectAll()" id="select-all-row" style="display:none">
+      <input type="checkbox" id="select-all-cb" style="accent-color:var(--accent);width:14px;height:14px;" />
+      <span>Select all</span>
+      <span id="file-count" style="margin-left:auto;color:var(--muted);font-size:11px"></span>
+    </div>
+    <div class="file-list" id="file-list">
+      <div class="empty-state" style="padding:40px 20px"><p>Select a repository</p></div>
+    </div>
+  </div>
 
-$('sample').onclick = () => {
-  setSeed(Date.now() % 100000);
-  lastSample = generateDocumentSet({ nTradelines: 6 });
-  $('eq').value = lastSample.reports.equifax;
-  $('ex').value = lastSample.reports.experian;
-  $('tu').value = lastSample.reports.transunion;
-  $('out').innerHTML = '<p class="note">Synthetic tri-bureau set loaded with seeded errors. Click Analyze Reports.</p>';
-};
+  <div class="panel">
+    <div class="no-repo" id="no-repo-msg">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+      <h3>No repository selected</h3>
+      <p>Choose a repo from the dropdown, or add / create a new one.</p>
+    </div>
 
-$('run').onclick = async () => {
-  const reports = { equifax: $('eq').value, experian: $('ex').value, transunion: $('tu').value };
-  if (!Object.values(reports).some(t => t.trim())) { $('out').innerHTML = '<p class="note">Paste at least one report or load the sample.</p>'; return; }
-  $('out').innerHTML = '<p class="note">Analyzing...</p>';
-  const key = $('key').value.trim();
-  try {
-    const res = await analyzeReports(reports, key ? { mode:'llm', apiKey:key } : { mode:'deterministic' });
-    render(res);
-  } catch (e) { $('out').innerHTML = `<p class="note">Error: ${e.message}</p>`; }
-};
+    <div id="repo-view" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+      <div class="panel-tabs">
+        <div class="tab active" onclick="switchTab('changes')" id="tab-changes">Changes</div>
+        <div class="tab" onclick="switchTab('history')" id="tab-history">History</div>
+        <div class="tab" onclick="switchTab('railway')" id="tab-railway">🚂 Railway</div>
+        <div class="tab" onclick="switchTab('settings')" id="tab-settings">⚙ Settings</div>
+      </div>
 
-function esc(s){ return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+      <div class="panel-body" id="diff-view">
+        <div class="empty-state">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <p>Select a file to see its diff</p>
+        </div>
+      </div>
 
-function render(res) {
-  const v = res.verification;
-  let html = `<div class="panel">
-    <span class="stat"><b>${v.fields_verified}</b> fields verified</span>
-    <span class="stat"><b>${v.fields_rejected}</b> rejected (unverifiable span)</span>
-    <span class="stat"><b>${(100*v.hallucination_rate).toFixed(2)}%</b> hallucination rate</span>
-    <span class="stat"><b>${(100*v.mean_confidence).toFixed(1)}%</b> mean confidence</span>
-    <span class="stat"><b>${res.entities.length}</b> resolved accounts</span>
-    <span class="stat"><b>${res.errors.length}</b> errors detected</span>
-  </div>`;
+      <div class="panel-body" id="history-view" style="display:none">
+        <div id="commit-log"></div>
+      </div>
 
-  if (res.errors.length) {
-    html += `<h2 style="margin:26px 0 4px">Detected Errors</h2>`;
-    for (const e of res.errors) {
-      html += `<div class="err"><h4>${e.type} <span class="conf">confidence ${(100*e.confidence).toFixed(0)}%</span></h4>
-        <div>${esc(e.explanation)}</div>
-        ${e.evidence.map(ev => `<div class="ev">${ev.bureau} / ${ev.field}: <em>"${esc(ev.span)}"</em></div>`).join('')}
-      </div>`;
-    }
-    html += `<h2 style="margin:26px 0 10px">Evidence-Linked Dispute Letters</h2>`;
-    for (const [bureau, letter] of Object.entries(res.letters)) {
-      if (!letter.includes('1.')) continue;
-      html += `<label style="margin-top:14px">${bureau}</label><pre class="letter">${esc(letter)}</pre>`;
-    }
-  } else {
-    html += `<div class="panel">No errors detected across the supplied reports.</div>`;
-  }
-  $('out').innerHTML = html;
+      <!-- RAILWAY TAB -->
+      <div class="panel-body" id="railway-view" style="display:none">
+        <div id="railway-content">
+          <div class="empty-state"><p>Connect Railway in Settings to see your services</p></div>
+        </div>
+      </div>
+
+      <div class="panel-body" id="settings-view" style="display:none">
+        <div class="settings-section">
+          <h3>GitHub</h3>
+          <div id="github-status"></div>
+        </div>
+        <div class="settings-section">
+          <h3>Netlify</h3>
+          <div id="netlify-status" style="margin-bottom:10px"></div>
+          <div class="settings-row">
+            <input type="password" id="netlify-token-input" placeholder="Netlify Personal Access Token" />
+            <button class="btn btn-netlify btn-sm" onclick="saveNetlifyToken()">Connect</button>
+          </div>
+          <div id="netlify-link-section" style="display:none;margin-top:14px">
+            <div class="sidebar-label" style="margin-bottom:8px">Link current repo to Netlify</div>
+            <div id="netlify-linked-info"></div>
+            <button class="btn btn-ghost btn-sm" onclick="showNetlifyLinkModal()" style="margin-top:6px">🔗 Link / Change Site</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Vercel</h3>
+          <div id="vercel-status" style="margin-bottom:10px"></div>
+          <div class="settings-row">
+            <input type="password" id="vercel-token-input" placeholder="Vercel Access Token" />
+            <button class="btn btn-vercel btn-sm" onclick="saveVercelToken()">Connect</button>
+          </div>
+          <div id="vercel-link-section" style="display:none;margin-top:14px">
+            <div class="sidebar-label" style="margin-bottom:8px">Link current repo to Vercel</div>
+            <div id="vercel-linked-info"></div>
+            <button class="btn btn-ghost btn-sm" onclick="showVercelLinkModal()" style="margin-top:6px">🔗 Link / Change Project</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Telegram Alerts</h3>
+          <div id="telegram-status" style="margin-bottom:10px"></div>
+          <div class="settings-row">
+            <input type="password" id="telegram-bot-token" placeholder="Bot Token (from @BotFather)" style="flex:2" />
+            <input type="text" id="telegram-chat-id" placeholder="Chat ID" style="flex:1" />
+            <button class="btn btn-telegram btn-sm" onclick="saveTelegramToken()">Connect</button>
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <div class="hint">Create a bot via @BotFather on Telegram. Your Chat ID: 7477833460</div>
+          </div>
+          <div id="telegram-actions" style="display:none;margin-top:10px;gap:8px;display:none">
+            <button class="btn btn-ghost btn-sm" onclick="testTelegram()">📤 Send Test Message</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h3>Railway</h3>
+          <div id="railway-status" style="margin-bottom:10px"></div>
+          <div class="settings-row">
+            <input type="password" id="railway-token-input" placeholder="Railway API Token" />
+            <button class="btn btn-railway btn-sm" onclick="saveRailwayToken()">Connect</button>
+          </div>
+          <div class="form-group" style="margin-top:6px">
+            <div class="hint">Generate at: railway.com → Account Settings → Tokens → Create Token</div>
+          </div>
+          <div id="railway-link-section" style="display:none;margin-top:14px">
+            <div class="sidebar-label" style="margin-bottom:8px">Link current repo to Railway service</div>
+            <div id="railway-linked-info"></div>
+            <button class="btn btn-ghost btn-sm" onclick="showRailwayLinkModal()" style="margin-top:6px">🔗 Link / Change Service</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPLOY BAR -->
+    <div class="deploy-bar" id="deploy-bar">
+      <div class="deploy-card netlify-card" id="netlify-deploy-card" style="display:none">
+        <div><div class="platform-label">◆ Netlify</div><div id="netlify-site-name" style="font-size:12px;color:var(--muted);margin-top:2px"></div></div>
+        <span class="deploy-status status-unknown" id="netlify-deploy-status">—</span>
+        <a href="#" class="deploy-url" id="netlify-deploy-url" target="_blank" style="display:none"></a>
+        <div class="deploy-spacer"></div>
+        <button class="btn btn-netlify btn-sm" onclick="triggerNetlifyDeploy()" id="netlify-deploy-btn">▶ Deploy</button>
+      </div>
+      <div class="deploy-card vercel-card" id="vercel-deploy-card" style="display:none">
+        <div><div class="platform-label">▲ Vercel</div><div id="vercel-project-name" style="font-size:12px;color:var(--muted);margin-top:2px"></div></div>
+        <span class="deploy-status status-unknown" id="vercel-deploy-status">—</span>
+        <a href="#" class="deploy-url" id="vercel-deploy-url" target="_blank" style="display:none"></a>
+        <div class="deploy-spacer"></div>
+        <button class="btn btn-vercel btn-sm" onclick="triggerVercelDeploy()" id="vercel-deploy-btn">▶ Deploy</button>
+      </div>
+      <div class="deploy-card railway-card" id="railway-deploy-card" style="display:none">
+        <div><div class="platform-label">🚂 Railway</div><div id="railway-service-name" style="font-size:12px;color:var(--muted);margin-top:2px"></div></div>
+        <span class="deploy-status status-unknown" id="railway-deploy-status">—</span>
+        <div class="deploy-spacer"></div>
+        <button class="btn btn-railway btn-sm" onclick="triggerRailwayRedeploy()" id="railway-deploy-btn">↺ Redeploy</button>
+        <button class="btn btn-ghost btn-sm" onclick="showRailwayLogs()" id="railway-logs-btn">📋 Logs</button>
+      </div>
+      <!-- UPTIME BAR -->
+      <div id="uptime-bar" style="width:100%;padding:6px 16px;background:var(--surface2);border-top:1px solid var(--border);font-size:11px;color:var(--muted);display:none;gap:12px;align-items:center;flex-wrap:wrap" class="uptime-bar">
+      </div>
+    </div>
+
+    <div class="commit-panel" id="commit-panel" style="display:none">
+      <textarea id="commit-msg" placeholder="Commit message (required)…"></textarea>
+      <div class="commit-row">
+        <label class="push-toggle"><input type="checkbox" id="push-toggle" checked />Push to GitHub</label>
+        <label class="push-toggle" id="auto-deploy-toggle-wrap" style="display:none"><input type="checkbox" id="auto-deploy-toggle" checked />Auto-deploy after push</label>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost btn-sm" onclick="refreshStatus()">↺</button>
+        <button class="btn btn-green" id="commit-btn" onclick="doCommit()">Commit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- MODALS -->
+<div class="overlay" id="new-repo-modal" style="display:none" onclick="closeModal(event,'new-repo-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>✦ Create New Repository</h2>
+    <div class="form-group"><label>Repository Name *</label><input type="text" id="nr-name" placeholder="my-project" /></div>
+    <div class="form-group"><label>Description</label><input type="text" id="nr-desc" placeholder="Optional" /></div>
+    <div class="form-group"><label>Local Folder Path *</label><input type="text" id="nr-path" placeholder="/Users/mollah/Desktop/my-project" /><div class="hint">Folder must exist on your Mac.</div></div>
+    <div class="form-group"><div class="toggle-row"><label>Private Repository</label><label class="toggle"><input type="checkbox" id="nr-private" checked /><span class="toggle-slider"></span></label></div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('new-repo-modal').style.display='none'">Cancel</button>
+      <button class="btn btn-green" id="nr-submit" onclick="createRepo()">Create Repository</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="add-repo-modal" style="display:none" onclick="closeModal(event,'add-repo-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>+ Add Existing Repository</h2>
+    <div class="form-group"><label>Local Folder Path *</label><input type="text" id="ar-path" placeholder="/Users/mollah/Desktop/my-project" /><div class="hint">Must be an existing git repo.</div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('add-repo-modal').style.display='none'">Cancel</button>
+      <button class="btn btn-blue" onclick="addRepo()">Add Repository</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="branch-modal" style="display:none" onclick="closeModal(event,'branch-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>Branches</h2>
+    <div class="form-group"><label>New Branch Name</label><input type="text" id="new-branch-name" placeholder="feature/my-feature" /></div>
+    <button class="btn btn-ghost" style="width:100%;margin-bottom:16px;justify-content:center" onclick="createBranch()">Create & Switch to New Branch</button>
+    <div class="sidebar-label" style="margin-bottom:8px">Switch Branch</div>
+    <div id="branch-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;"></div>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="document.getElementById('branch-modal').style.display='none'">Close</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="pull-modal" style="display:none" onclick="closeModal(event,'pull-modal')">
+  <div class="modal" onclick="event.stopPropagation()" style="width:360px;text-align:center">
+    <h2>↓ Pull from GitHub</h2>
+    <p style="color:var(--muted);margin:12px 0 20px;font-size:13px">Pull latest changes from origin.</p>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn btn-ghost" onclick="document.getElementById('pull-modal').style.display='none'">Cancel</button>
+      <button class="btn btn-blue" onclick="doPull()">Pull Now</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="netlify-link-modal" style="display:none" onclick="closeModal(event,'netlify-link-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>◆ Link to Netlify Site</h2>
+    <div id="netlify-sites-list" style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="unlinkNetlify()" style="margin-right:auto">Unlink</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('netlify-link-modal').style.display='none'">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="vercel-link-modal" style="display:none" onclick="closeModal(event,'vercel-link-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>▲ Link to Vercel Project</h2>
+    <div id="vercel-projects-list" style="max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:6px;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="unlinkVercel()" style="margin-right:auto">Unlink</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('vercel-link-modal').style.display='none'">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="railway-link-modal" style="display:none" onclick="closeModal(event,'railway-link-modal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>🚂 Link to Railway Service</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Choose which Railway service this repo is connected to.</p>
+    <div id="railway-services-list" style="max-height:340px;overflow-y:auto;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="unlinkRailway()" style="margin-right:auto">Unlink</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('railway-link-modal').style.display='none'">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="railway-logs-modal" style="display:none" onclick="closeModal(event,'railway-logs-modal')">
+  <div class="modal" onclick="event.stopPropagation()" style="width:640px">
+    <h2>📋 Railway Logs — <span id="logs-service-name"></span></h2>
+    <div class="log-viewer" id="log-viewer"><div style="color:var(--muted)">Loading logs…</div></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="refreshLogs()">↺ Refresh</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('railway-logs-modal').style.display='none'">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentRepo = null, allFiles = [], selectedFile = null, currentTab = 'changes';
+let repoNetlify = null, repoVercel = null, repoRailway = null;
+let deployStatusInterval = null;
+
+async function init() {
+  const cfg = await api('/api/config');
+  if (!cfg.hasToken) { document.getElementById('setup-screen').style.display = 'flex'; return; }
+  loadUser(); loadRepos(cfg.repos); updateSettingsStatus(cfg);
 }
+
+async function loadUser() {
+  try {
+    const u = await api('/api/whoami');
+    document.getElementById('user-pill').style.display = 'flex';
+    document.getElementById('user-avatar').src = u.avatar;
+    document.getElementById('user-login').textContent = u.login;
+  } catch {}
+}
+
+function loadRepos(repos) {
+  const sel = document.getElementById('repo-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Select a repository —</option>';
+  repos.forEach(r => { const o = document.createElement('option'); o.value = r.localPath; o.textContent = r.name; sel.appendChild(o); });
+  if (cur) sel.value = cur;
+}
+
+function updateSettingsStatus(cfg) {
+  document.getElementById('github-status').innerHTML = cfg.hasToken ? '<span class="connected-badge connected-github">✓ Connected</span>' : '<span style="color:var(--muted);font-size:13px">Not connected</span>';
+  document.getElementById('netlify-status').innerHTML = cfg.hasNetlify ? '<span class="connected-badge connected-netlify">✓ Netlify Connected</span>' : '<span style="color:var(--muted);font-size:13px">Not connected</span>';
+  document.getElementById('vercel-status').innerHTML = cfg.hasVercel ? '<span class="connected-badge connected-vercel">✓ Vercel Connected</span>' : '<span style="color:var(--muted);font-size:13px">Not connected</span>';
+  document.getElementById('railway-status').innerHTML = cfg.hasRailway ? '<span class="connected-badge connected-railway">✓ Railway Connected</span>' : '<span style="color:var(--muted);font-size:13px">Not connected</span>';
+  const tgEl = document.getElementById('telegram-status');
+  if (tgEl) tgEl.innerHTML = cfg.hasTelegram ? '<span class="connected-badge connected-telegram">✓ Telegram Connected</span>' : '<span style="color:var(--muted);font-size:13px">Not connected</span>';
+  const tgActions = document.getElementById('telegram-actions');
+  if (tgActions) tgActions.style.display = cfg.hasTelegram ? 'flex' : 'none';
+}
+
+async function saveToken() {
+  const token = document.getElementById('setup-token').value.trim();
+  if (!token) return toast('Enter your GitHub token', 'error');
+  await api('/api/token', 'POST', { token });
+  document.getElementById('setup-screen').style.display = 'none';
+  init(); toast('GitHub connected!', 'success');
+}
+
+async function saveNetlifyToken() {
+  const token = document.getElementById('netlify-token-input').value.trim();
+  if (!token) return toast('Enter your Netlify token', 'error');
+  try {
+    const r = await api('/api/netlify/token', 'POST', { token });
+    toast(`Netlify connected as ${r.name}`, 'success');
+    document.getElementById('netlify-token-input').value = '';
+    const cfg = await api('/api/config'); updateSettingsStatus(cfg);
+    if (currentRepo) updateDeploySection();
+  } catch (e) { toast('Netlify error: ' + e.message, 'error'); }
+}
+
+async function saveVercelToken() {
+  const token = document.getElementById('vercel-token-input').value.trim();
+  if (!token) return toast('Enter your Vercel token', 'error');
+  try {
+    const r = await api('/api/vercel/token', 'POST', { token });
+    toast(`Vercel connected as ${r.name}`, 'success');
+    document.getElementById('vercel-token-input').value = '';
+    const cfg = await api('/api/config'); updateSettingsStatus(cfg);
+    if (currentRepo) updateDeploySection();
+  } catch (e) { toast('Vercel error: ' + e.message, 'error'); }
+}
+
+async function saveRailwayToken() {
+  const token = document.getElementById('railway-token-input').value.trim();
+  if (!token) return toast('Enter your Railway token', 'error');
+  try {
+    const r = await api('/api/railway/token', 'POST', { token });
+    toast(`Railway connected as ${r.name}`, 'success');
+    document.getElementById('railway-token-input').value = '';
+    const cfg = await api('/api/config'); updateSettingsStatus(cfg);
+    if (currentRepo) updateDeploySection();
+  } catch (e) { toast('Railway error: ' + e.message, 'error'); }
+}
+
+async function selectRepo(localPath) {
+  clearInterval(deployStatusInterval);
+  if (!localPath) {
+    currentRepo = null; repoNetlify = null; repoVercel = null; repoRailway = null;
+    document.getElementById('no-repo-msg').style.display = 'flex';
+    document.getElementById('repo-view').style.display = 'none';
+    document.getElementById('commit-panel').style.display = 'none';
+    document.getElementById('branch-display').style.display = 'none';
+    document.getElementById('pull-btn').style.display = 'none';
+    document.getElementById('deploy-bar').classList.remove('visible');
+    document.getElementById('file-list').innerHTML = '<div class="empty-state" style="padding:40px 20px"><p>Select a repository</p></div>';
+    document.getElementById('select-all-row').style.display = 'none';
+    return;
+  }
+  currentRepo = localPath;
+  document.getElementById('no-repo-msg').style.display = 'none';
+  document.getElementById('repo-view').style.display = 'flex';
+  document.getElementById('commit-panel').style.display = 'block';
+  document.getElementById('branch-display').style.display = 'flex';
+  document.getElementById('pull-btn').style.display = 'inline-flex';
+  switchTab('changes');
+  await refreshStatus();
+}
+
+async function refreshStatus() {
+  if (!currentRepo) return;
+  try {
+    const data = await api('/api/status', 'POST', { localPath: currentRepo });
+    allFiles = data.files; repoNetlify = data.netlify; repoVercel = data.vercel; repoRailway = data.railway;
+    document.getElementById('branch-name').textContent = data.branch;
+    document.getElementById('ahead-badge').style.display = data.ahead > 0 ? 'inline' : 'none';
+    if (data.ahead > 0) document.getElementById('ahead-badge').textContent = `+${data.ahead}`;
+    renderFileList(); updateDeployBar();
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
+}
+
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  const row = document.getElementById('select-all-row');
+  if (!allFiles.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:40px 20px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg><p>No changes — working tree clean</p></div>';
+    row.style.display = 'none'; document.getElementById('file-count').textContent = ''; return;
+  }
+  row.style.display = 'flex';
+  document.getElementById('file-count').textContent = `${allFiles.length} file${allFiles.length !== 1 ? 's' : ''}`;
+  list.innerHTML = allFiles.map((f, i) => `
+    <div class="file-item ${selectedFile === f.file ? 'selected' : ''}" onclick="viewDiff('${f.file.replace(/'/g,"\\'")}',this)">
+      <input type="checkbox" checked data-idx="${i}" onclick="event.stopPropagation()" />
+      <span class="file-name" title="${f.file}">${f.file}</span>
+      <span class="badge badge-${f.type}">${f.type}</span>
+    </div>`).join('');
+  updateSelectAll();
+}
+
+function toggleSelectAll() {
+  const cb = document.getElementById('select-all-cb'); cb.checked = !cb.checked;
+  document.querySelectorAll('#file-list input[type=checkbox]').forEach(c => c.checked = cb.checked);
+}
+function updateSelectAll() {
+  const all = [...document.querySelectorAll('#file-list input[type=checkbox]')];
+  document.getElementById('select-all-cb').checked = all.length > 0 && all.every(c => c.checked);
+}
+
+// ---- DEPLOY BAR ----
+function updateDeployBar() {
+  const bar = document.getElementById('deploy-bar');
+  let hasAny = false;
+  if (repoNetlify) { document.getElementById('netlify-deploy-card').style.display='flex'; document.getElementById('netlify-site-name').textContent=repoNetlify.siteName; hasAny=true; fetchNetlifyStatus(); } else { document.getElementById('netlify-deploy-card').style.display='none'; }
+  if (repoVercel) { document.getElementById('vercel-deploy-card').style.display='flex'; document.getElementById('vercel-project-name').textContent=repoVercel.projectName; hasAny=true; fetchVercelStatus(); } else { document.getElementById('vercel-deploy-card').style.display='none'; }
+  if (repoRailway) { document.getElementById('railway-deploy-card').style.display='flex'; document.getElementById('railway-service-name').textContent=repoRailway.serviceName; hasAny=true; fetchRailwayStatus(); } else { document.getElementById('railway-deploy-card').style.display='none'; }
+  bar.classList.toggle('visible', hasAny);
+  document.getElementById('auto-deploy-toggle-wrap').style.display = hasAny ? 'flex' : 'none';
+  clearInterval(deployStatusInterval);
+  if (hasAny) {
+    deployStatusInterval = setInterval(() => {
+      if (repoNetlify) fetchNetlifyStatus();
+      if (repoVercel) fetchVercelStatus();
+      if (repoRailway) fetchRailwayStatus();
+    }, 10000);
+  }
+}
+
+async function fetchNetlifyStatus() {
+  try { const d = await api(`/api/netlify/status/${repoNetlify.siteId}`); setDeployStatus('netlify', d.state, d.url); } catch {}
+}
+async function fetchVercelStatus() {
+  try { const d = await api(`/api/vercel/status/${repoVercel.projectId}`); setDeployStatus('vercel', d.state, d.url); } catch {}
+}
+async function fetchRailwayStatus() {
+  try { const d = await api(`/api/railway/status/${repoRailway.serviceId}`); setRailwayStatus(d.status); } catch {}
+}
+
+function setDeployStatus(platform, state, url) {
+  const el = document.getElementById(`${platform}-deploy-status`);
+  const urlEl = document.getElementById(`${platform}-deploy-url`);
+  el.className = 'deploy-status';
+  if (['ready','READY'].includes(state)) { el.classList.add('status-ready'); el.textContent = '✓ Ready'; }
+  else if (['building','processing','uploading','enqueued','BUILDING','INITIALIZING'].includes(state)) { el.classList.add('status-building'); el.textContent = '⟳ Building'; }
+  else if (['error','failed','ERROR'].includes(state)) { el.classList.add('status-error'); el.textContent = '✕ Failed'; }
+  else { el.classList.add('status-unknown'); el.textContent = state || '—'; }
+  if (url && urlEl) { urlEl.style.display='inline'; urlEl.href=url; urlEl.textContent=url.replace('https://','').substring(0,28)+(url.length>35?'…':''); }
+}
+
+function setRailwayStatus(status) {
+  const el = document.getElementById('railway-deploy-status');
+  el.className = 'deploy-status';
+  if (['SUCCESS','ACTIVE'].includes(status)) { el.classList.add('status-ready'); el.textContent = '✓ Active'; }
+  else if (['BUILDING','DEPLOYING','INITIALIZING'].includes(status)) { el.classList.add('status-building'); el.textContent = '⟳ Deploying'; }
+  else if (['FAILED','CRASHED','ERROR'].includes(status)) { el.classList.add('status-error'); el.textContent = '✕ ' + status; }
+  else { el.classList.add('status-unknown'); el.textContent = status || '—'; }
+}
+
+async function triggerNetlifyDeploy() {
+  const btn = document.getElementById('netlify-deploy-btn');
+  btn.disabled=true; btn.innerHTML='<span class="loading"></span>';
+  try {
+    const repoName = document.getElementById('repo-select').options[document.getElementById('repo-select').selectedIndex].text;
+    notifyDeploy('Netlify', repoName, 'started', null);
+    await api('/api/netlify/deploy','POST',{siteId:repoNetlify.siteId});
+    toast('Netlify deploy triggered ✓','success');
+    setDeployStatus('netlify','building',null);
+    setTimeout(async () => {
+      const s = await api('/api/netlify/status/' + repoNetlify.siteId);
+      notifyDeploy('Netlify', repoName, s.state === 'ready' ? 'success' : 'failed', s.url);
+      if (s.url) setTimeout(() => checkUptime(s.url, repoName, 'Netlify'), 5000);
+    }, 60000);
+  }
+  catch(e) { toast('Netlify error: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='▶ Deploy';
+}
+
+async function triggerVercelDeploy() {
+  const btn = document.getElementById('vercel-deploy-btn');
+  btn.disabled=true; btn.innerHTML='<span class="loading"></span>';
+  try {
+    const repoName2 = document.getElementById('repo-select').options[document.getElementById('repo-select').selectedIndex].text;
+    notifyDeploy('Vercel', repoName2, 'started', null);
+    await api('/api/vercel/deploy','POST',{projectId:repoVercel.projectId,projectName:repoVercel.projectName});
+    toast('Vercel deploy triggered ✓','success');
+    setDeployStatus('vercel','building',null);
+    setTimeout(async () => {
+      const s = await api('/api/vercel/status/' + repoVercel.projectId);
+      notifyDeploy('Vercel', repoName2, s.state === 'READY' ? 'success' : 'failed', s.url);
+      if (s.url) setTimeout(() => checkUptime(s.url, repoName2, 'Vercel'), 5000);
+    }, 60000);
+  }
+  catch(e) { toast('Vercel error: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='▶ Deploy';
+}
+
+async function triggerRailwayRedeploy() {
+  const btn = document.getElementById('railway-deploy-btn');
+  btn.disabled=true; btn.innerHTML='<span class="loading"></span>';
+  try {
+    const repoName3 = document.getElementById('repo-select').options[document.getElementById('repo-select').selectedIndex].text;
+    notifyDeploy('Railway', repoName3, 'started', null);
+    await api('/api/railway/redeploy','POST',{serviceId:repoRailway.serviceId, environmentId:repoRailway.environmentId});
+    toast('Railway redeploy triggered ✓','success'); setRailwayStatus('DEPLOYING');
+    notifyDeploy('Railway', repoName3, 'success', null);
+  } catch(e) { toast('Railway error: '+e.message,'error'); }
+  btn.disabled=false; btn.textContent='↺ Redeploy';
+}
+
+async function showRailwayLogs() {
+  if (!repoRailway) return;
+  document.getElementById('railway-logs-modal').style.display='flex';
+  document.getElementById('logs-service-name').textContent = repoRailway.serviceName;
+  await refreshLogs();
+}
+
+async function refreshLogs() {
+  const viewer = document.getElementById('log-viewer');
+  viewer.innerHTML = '<div style="color:var(--muted)">Loading…</div>';
+  try {
+    // Get latest deployment ID first
+    const status = await api(`/api/railway/status/${repoRailway.serviceId}`);
+    if (!status.deployId) { viewer.innerHTML = '<div style="color:var(--muted)">No deployment found</div>'; return; }
+    const data = await api(`/api/railway/logs/${status.deployId}`);
+    if (!data.logs?.length) { viewer.innerHTML = '<div style="color:var(--muted)">No logs available</div>'; return; }
+    viewer.innerHTML = data.logs.map(l => {
+      const time = new Date(l.timestamp).toLocaleTimeString();
+      const cls = l.severity === 'ERROR' ? 'log-error' : l.severity === 'WARN' ? 'log-warn' : 'log-msg';
+      return `<div class="log-line"><span class="log-time">${time}</span><span class="${cls}">${l.message.replace(/</g,'&lt;')}</span></div>`;
+    }).join('');
+    viewer.scrollTop = viewer.scrollHeight;
+  } catch(e) { viewer.innerHTML = `<div style="color:var(--deleted)">${e.message}</div>`; }
+}
+
+// ---- RAILWAY TAB ----
+async function loadRailwayTab() {
+  const content = document.getElementById('railway-content');
+  const cfg = await api('/api/config');
+  if (!cfg.hasRailway) {
+    content.innerHTML = '<div class="empty-state"><p>Connect Railway in ⚙ Settings to see your services</p></div>';
+    return;
+  }
+  content.innerHTML = '<div style="color:var(--muted);padding:20px">Loading services…</div>';
+  try {
+    const data = await api('/api/railway/projects');
+    if (!data.projects?.length) { content.innerHTML = '<div style="color:var(--muted);padding:20px">No Railway projects found</div>'; return; }
+    content.innerHTML = data.projects.map(p => `
+      <div class="railway-project">
+        <div class="railway-project-name">${p.name}</div>
+        ${p.services.map(s => {
+          let statusCls = 'status-unknown', statusTxt = s.status;
+          if (['SUCCESS','ACTIVE'].includes(s.status)) { statusCls='status-ready'; statusTxt='✓ Active'; }
+          else if (['BUILDING','DEPLOYING'].includes(s.status)) { statusCls='status-building'; statusTxt='⟳ Deploying'; }
+          else if (['FAILED','CRASHED'].includes(s.status)) { statusCls='status-error'; statusTxt='✕ '+s.status; }
+          const time = s.lastDeploy ? new Date(s.lastDeploy).toLocaleString() : 'Never';
+          return `<div class="railway-service-item">
+            <div style="width:8px;height:8px;border-radius:50%;background:${statusCls.includes('ready')?'var(--new)':statusCls.includes('building')?'var(--modified)':statusCls.includes('error')?'var(--deleted)':'var(--muted)'};flex-shrink:0"></div>
+            <div class="railway-service-name">${s.name}</div>
+            <span class="deploy-status ${statusCls}">${statusTxt}</span>
+            <span class="railway-service-time">${time}</span>
+          </div>`;
+        }).join('')}
+      </div>`).join('');
+  } catch(e) { content.innerHTML = `<div style="color:var(--deleted);padding:20px">${e.message}</div>`; }
+}
+
+// ---- RAILWAY LINK MODAL ----
+async function showRailwayLinkModal() {
+  document.getElementById('railway-link-modal').style.display='flex';
+  const listEl = document.getElementById('railway-services-list');
+  listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Loading…</div>';
+  try {
+    const data = await api('/api/railway/projects');
+    listEl.innerHTML = data.projects.map(p => `
+      <div class="railway-project" style="margin-bottom:12px">
+        <div class="railway-project-name" style="padding:4px 0">${p.name}</div>
+        ${p.services.map(s => `
+          <div class="link-item" onclick="linkRailwayService('${s.id}','${s.name.replace(/'/g,"\\'")}','${p.id}','${p.name.replace(/'/g,"\\'")}')">
+            <div><div class="link-item-name">${s.name}</div><div class="link-item-url">${p.name}</div></div>
+            <span class="deploy-status ${['SUCCESS','ACTIVE'].includes(s.status)?'status-ready':['FAILED','CRASHED'].includes(s.status)?'status-error':'status-unknown'}">${s.status}</span>
+          </div>`).join('')}
+      </div>`).join('');
+  } catch(e) { listEl.innerHTML = `<div style="padding:20px;color:var(--deleted)">${e.message}</div>`; }
+}
+
+async function linkRailwayService(serviceId, serviceName, projectId, projectName) {
+  await api('/api/railway/link','POST',{localPath:currentRepo,serviceId,serviceName,projectId,projectName});
+  repoRailway = {serviceId,serviceName,projectId,projectName};
+  toast(`Linked to ${serviceName}`,'success');
+  document.getElementById('railway-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+
+async function unlinkRailway() {
+  await api('/api/railway/unlink','POST',{localPath:currentRepo});
+  repoRailway = null; toast('Railway unlinked','info');
+  document.getElementById('railway-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+
+// ---- TABS ----
+function switchTab(tab) {
+  currentTab = tab;
+  ['changes','history','railway','settings'].forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if (el) el.classList.toggle('active', t === tab);
+  });
+  document.getElementById('diff-view').style.display = tab==='changes'?'block':'none';
+  document.getElementById('history-view').style.display = tab==='history'?'block':'none';
+  document.getElementById('railway-view').style.display = tab==='railway'?'block':'none';
+  document.getElementById('settings-view').style.display = tab==='settings'?'block':'none';
+  document.getElementById('commit-panel').style.display = tab==='changes'?'block':'none';
+  if (tab==='history') loadHistory();
+  if (tab==='railway') loadRailwayTab();
+  if (tab==='settings') loadSettingsTab();
+}
+
+async function loadSettingsTab() {
+  const cfg = await api('/api/config'); updateSettingsStatus(cfg); updateDeploySection();
+}
+
+function updateDeploySection() {
+  api('/api/config').then(cfg => {
+    document.getElementById('netlify-link-section').style.display = cfg.hasNetlify && currentRepo ? 'block' : 'none';
+    document.getElementById('vercel-link-section').style.display = cfg.hasVercel && currentRepo ? 'block' : 'none';
+    document.getElementById('railway-link-section').style.display = cfg.hasRailway && currentRepo ? 'block' : 'none';
+    document.getElementById('netlify-linked-info').innerHTML = repoNetlify ? `<span class="connected-badge connected-netlify">◆ ${repoNetlify.siteName}</span>` : '<span style="color:var(--muted);font-size:13px">Not linked</span>';
+    document.getElementById('vercel-linked-info').innerHTML = repoVercel ? `<span class="connected-badge connected-vercel">▲ ${repoVercel.projectName}</span>` : '<span style="color:var(--muted);font-size:13px">Not linked</span>';
+    document.getElementById('railway-linked-info').innerHTML = repoRailway ? `<span class="connected-badge connected-railway">🚂 ${repoRailway.serviceName}</span>` : '<span style="color:var(--muted);font-size:13px">Not linked</span>';
+  });
+}
+
+async function loadHistory() {
+  const el = document.getElementById('commit-log');
+  el.innerHTML = '<div style="padding:20px;color:var(--muted)">Loading…</div>';
+  const data = await api('/api/log','POST',{localPath:currentRepo});
+  if (!data.commits.length) { el.innerHTML = '<div style="padding:20px;color:var(--muted)">No commits yet.</div>'; return; }
+  el.innerHTML = data.commits.map(c => `<div class="commit-log-item"><span class="commit-hash">${c.short}</span><div><div class="commit-subject">${c.subject}</div><div class="commit-meta">${c.author} · ${c.time}</div></div></div>`).join('');
+}
+
+async function doCommit() {
+  const msg = document.getElementById('commit-msg').value.trim();
+  if (!msg) return toast('Please enter a commit message','error');
+  const checked = [...document.querySelectorAll('#file-list input[type=checkbox]:checked')];
+  if (!checked.length) return toast('No files selected','error');
+  const files = checked.map(c => allFiles[parseInt(c.dataset.idx)].file);
+  const push = document.getElementById('push-toggle').checked;
+  const autoDeploy = document.getElementById('auto-deploy-toggle').checked;
+  const btn = document.getElementById('commit-btn');
+  btn.disabled=true; btn.innerHTML='<span class="loading"></span>';
+  try {
+    await api('/api/commit','POST',{localPath:currentRepo,files,message:msg,push});
+    toast(push?'Committed & pushed ✓':'Committed locally ✓','success');
+    document.getElementById('commit-msg').value='';
+    await refreshStatus();
+    if (push && autoDeploy) {
+      if (repoNetlify) setTimeout(triggerNetlifyDeploy,1500);
+      if (repoVercel) setTimeout(triggerVercelDeploy,1500);
+      // Railway auto-deploys via GitHub webhook, just refresh status
+      if (repoRailway) setTimeout(fetchRailwayStatus,5000);
+    }
+  } catch(e) { toast('Error: '+e,'error'); }
+  btn.disabled=false; btn.textContent='Commit';
+}
+
+async function createRepo() {
+  const name=document.getElementById('nr-name').value.trim(), desc=document.getElementById('nr-desc').value.trim(), localPath=document.getElementById('nr-path').value.trim(), isPrivate=document.getElementById('nr-private').checked;
+  if (!name||!localPath) return toast('Name and path required','error');
+  const btn=document.getElementById('nr-submit'); btn.disabled=true; btn.textContent='Creating…';
+  try {
+    await api('/api/repos/create','POST',{name,description:desc,isPrivate,localPath});
+    toast('Repo created ✓','success');
+    document.getElementById('new-repo-modal').style.display='none';
+    const cfg=await api('/api/config'); loadRepos(cfg.repos);
+    document.getElementById('repo-select').value=localPath; selectRepo(localPath);
+  } catch(e) { toast('Error: '+e,'error'); }
+  btn.disabled=false; btn.textContent='Create Repository';
+}
+
+async function addRepo() {
+  const localPath=document.getElementById('ar-path').value.trim();
+  if (!localPath) return toast('Path required','error');
+  try {
+    await api('/api/repos/add','POST',{localPath}); toast('Repository added','success');
+    document.getElementById('add-repo-modal').style.display='none';
+    const cfg=await api('/api/config'); loadRepos(cfg.repos);
+    document.getElementById('repo-select').value=localPath; selectRepo(localPath);
+  } catch(e) { toast('Error: '+e,'error'); }
+}
+
+async function showNetlifyLinkModal() {
+  document.getElementById('netlify-link-modal').style.display='flex';
+  const listEl=document.getElementById('netlify-sites-list');
+  listEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">Loading…</div>';
+  try {
+    const data=await api('/api/netlify/sites');
+    listEl.innerHTML=data.sites.map(s=>`<div class="link-item" onclick="linkNetlifySite('${s.id}','${s.name.replace(/'/g,"\\'")}','${(s.url||'').replace(/'/g,"\\'")}')"><div><div class="link-item-name">${s.name}</div><div class="link-item-url">${s.customDomain||s.url||''}</div></div><span class="deploy-status ${s.state==='ready'?'status-ready':'status-unknown'}">${s.state}</span></div>`).join('');
+  } catch(e) { listEl.innerHTML=`<div style="padding:20px;color:var(--deleted)">${e.message}</div>`; }
+}
+async function linkNetlifySite(siteId,siteName,siteUrl) {
+  await api('/api/netlify/link','POST',{localPath:currentRepo,siteId,siteName,siteUrl});
+  repoNetlify={siteId,siteName,siteUrl}; toast(`Linked to ${siteName}`,'success');
+  document.getElementById('netlify-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+async function unlinkNetlify() {
+  await api('/api/netlify/unlink','POST',{localPath:currentRepo}); repoNetlify=null;
+  toast('Netlify unlinked','info'); document.getElementById('netlify-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+
+async function showVercelLinkModal() {
+  document.getElementById('vercel-link-modal').style.display='flex';
+  const listEl=document.getElementById('vercel-projects-list');
+  listEl.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">Loading…</div>';
+  try {
+    const data=await api('/api/vercel/projects');
+    listEl.innerHTML=data.projects.map(p=>`<div class="link-item" onclick="linkVercelProject('${p.id}','${p.name.replace(/'/g,"\\'")}','${(p.url||'').replace(/'/g,"\\'")}')"><div><div class="link-item-name">${p.name}</div><div class="link-item-url">${p.url||''}</div></div></div>`).join('');
+  } catch(e) { listEl.innerHTML=`<div style="padding:20px;color:var(--deleted)">${e.message}</div>`; }
+}
+async function linkVercelProject(projectId,projectName,projectUrl) {
+  await api('/api/vercel/link','POST',{localPath:currentRepo,projectId,projectName,projectUrl});
+  repoVercel={projectId,projectName,projectUrl}; toast(`Linked to ${projectName}`,'success');
+  document.getElementById('vercel-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+async function unlinkVercel() {
+  await api('/api/vercel/unlink','POST',{localPath:currentRepo}); repoVercel=null;
+  toast('Vercel unlinked','info'); document.getElementById('vercel-link-modal').style.display='none';
+  updateDeployBar(); updateDeploySection();
+}
+
+async function showBranchModal() {
+  document.getElementById('branch-modal').style.display='flex';
+  const data=await api('/api/branches','POST',{localPath:currentRepo});
+  document.getElementById('branch-list').innerHTML=data.branches.map(b=>`<div style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px;${b===data.current?'color:var(--accent);font-weight:600':''}" onclick="switchBranch('${b}')">${b===data.current?'✓ ':''}${b}</div>`).join('');
+}
+async function switchBranch(branch) {
+  try { await api('/api/checkout','POST',{localPath:currentRepo,branch}); document.getElementById('branch-modal').style.display='none'; toast(`Switched to ${branch}`,'success'); refreshStatus(); }
+  catch(e) { toast('Error: '+e,'error'); }
+}
+async function createBranch() {
+  const name=document.getElementById('new-branch-name').value.trim();
+  if (!name) return toast('Branch name required','error');
+  try { await api('/api/checkout','POST',{localPath:currentRepo,branch:name,create:true}); document.getElementById('branch-modal').style.display='none'; document.getElementById('new-branch-name').value=''; toast(`Created & switched to ${name}`,'success'); refreshStatus(); }
+  catch(e) { toast('Error: '+e,'error'); }
+}
+
+function showPullConfirm() { document.getElementById('pull-modal').style.display='flex'; }
+async function doPull() {
+  try { await api('/api/pull','POST',{localPath:currentRepo}); document.getElementById('pull-modal').style.display='none'; toast('Pulled ✓','success'); refreshStatus(); }
+  catch(e) { toast('Error: '+e,'error'); }
+}
+
+async function viewDiff(file,el) {
+  selectedFile=file;
+  document.querySelectorAll('.file-item').forEach(i=>i.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+  const view=document.getElementById('diff-view');
+  view.innerHTML='<div class="diff-header">Loading…</div>';
+  try { const data=await api('/api/diff','POST',{localPath:currentRepo,file}); renderDiff(file,data.diff); }
+  catch(e) { view.innerHTML=`<div class="diff-header">Error: ${e.message}</div>`; }
+}
+function renderDiff(file,raw) {
+  const lines=raw.split('\n');
+  let html=`<div class="diff-header">📄 ${file}</div><div class="diff-code">`;
+  lines.forEach(line=>{
+    const esc=line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    if (line.startsWith('+')&&!line.startsWith('+++')) html+=`<div class="diff-line diff-add">${esc}</div>`;
+    else if (line.startsWith('-')&&!line.startsWith('---')) html+=`<div class="diff-line diff-remove">${esc}</div>`;
+    else if (line.startsWith('@@')) html+=`<div class="diff-line diff-hunk">${esc}</div>`;
+    else html+=`<div class="diff-line">${esc}</div>`;
+  });
+  document.getElementById('diff-view').innerHTML=html+'</div>';
+}
+
+function showNewRepoModal() { document.getElementById('new-repo-modal').style.display='flex'; }
+function showAddRepoModal() { document.getElementById('add-repo-modal').style.display='flex'; }
+function closeModal(e,id) { if (e.target===e.currentTarget) document.getElementById(id).style.display='none'; }
+
+function toast(msg,type='info') {
+  const c=document.getElementById('toast-container'), t=document.createElement('div');
+  t.className=`toast toast-${type}`; t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),3500);
+}
+
+
+async function saveTelegramToken() {
+  const botToken = document.getElementById('telegram-bot-token').value.trim();
+  const chatId = document.getElementById('telegram-chat-id').value.trim();
+  if (!botToken || !chatId) return toast('Bot token and chat ID are both required', 'error');
+  try {
+    await api('/api/telegram/token', 'POST', { botToken, chatId });
+    toast('Telegram connected — check your Telegram for a test message ✓', 'success');
+    document.getElementById('telegram-bot-token').value = '';
+    document.getElementById('telegram-chat-id').value = '';
+    const cfg = await api('/api/config');
+    updateSettingsStatus(cfg);
+  } catch(e) { toast('Telegram error: ' + e.message, 'error'); }
+}
+
+async function testTelegram() {
+  try { await api('/api/telegram/test', 'POST', {}); toast('Test message sent to Telegram ✓', 'success'); }
+  catch(e) { toast('Error: ' + e.message, 'error'); }
+}
+
+function notifyDeploy(platform, repoName, status, url) {
+  const cfg_check = fetch('/api/config').then(r=>r.json()).then(cfg => {
+    if (!cfg.hasTelegram) return;
+    let msg = '';
+    if (status === 'started') msg = '🚀 <b>Deploy Started</b>\n' + repoName + ' → ' + platform;
+    else if (status === 'success') msg = '✅ <b>Deploy Success</b>\n' + repoName + ' → ' + platform + (url ? '\n🔗 ' + url : '');
+    else if (status === 'failed') msg = '❌ <b>Deploy Failed</b>\n' + repoName + ' → ' + platform;
+    if (msg) api('/api/telegram/notify', 'POST', { message: msg }).catch(()=>{});
+  });
+}
+
+async function checkUptime(url, repoName, platform) {
+  if (!url) return;
+  try { await api('/api/uptime/check', 'POST', { url, repoName, platform }); }
+  catch {}
+}
+
+async function api(url,method='GET',body=null) {
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if (body) opts.body=JSON.stringify(body);
+  const res=await fetch(url,opts); const data=await res.json();
+  if (!res.ok) throw new Error(data.error||'Unknown error');
+  return data;
+}
+
+init();
 </script>
 </body>
 </html>
