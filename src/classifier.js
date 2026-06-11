@@ -100,7 +100,23 @@ export function classifyErrors(entities, byBureau, opts = {}) {
       }
     }
   }
-  return errors;
+  // Deduplicate cross-bureau errors: keep only the most severe pair per (entity_id, type)
+  const xbTypes = new Set(['XB_BALANCE', 'XB_STATUS', 'REAGED_DOFD']);
+  const seen = new Map();
+  const deduped = [];
+  for (const e of errors) {
+    if (!xbTypes.has(e.type) || e.entity_id == null) {
+      deduped.push(e);
+      continue;
+    }
+    const key = e.entity_id + '|' + e.type;
+    if (!seen.has(key)) {
+      seen.set(key, e);
+      deduped.push(e);
+    }
+    // else drop the duplicate pair
+  }
+  return deduped;
 }
 
 function normalizeEq(a, b) {

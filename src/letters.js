@@ -49,6 +49,15 @@ ${consumerName}`;
 }
 
 function creditorOf(e) {
-  const ev = e.evidence.find(x => x.field === 'creditor') || e.evidence[0];
-  return ev?.value || ev?.span || 'Account in dispute';
+  // prefer explicit creditor value stored on any evidence entry
+  const credEv = e.evidence.find(x => x.field === 'creditor');
+  if (credEv?.value) return credEv.value;
+  // fall back to creditor field on the entity members via explanation text
+  const match = e.explanation.match(/^[^:]+:\s*(.+?)\s+(?:account|balance|status|date)/i);
+  if (match) return match[1];
+  // last resort: first non-null value that doesn't look like a money/date string
+  for (const ev of e.evidence) {
+    if (ev.value && !/^[\$\d\s,\.\/\-]+$/.test(String(ev.value))) return String(ev.value);
+  }
+  return 'Account in dispute';
 }
