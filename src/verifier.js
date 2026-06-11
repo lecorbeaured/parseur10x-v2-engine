@@ -20,8 +20,9 @@ export function verifyExtraction(zone, extraction) {
   }
   // value-span consistency: the value should appear inside its own span
   for (const [name, f] of Object.entries(verified)) {
-    const valStr = String(f.value).toLowerCase();
-    if (valStr.length >= 2 && !ws(f.span).includes(valStr.replace(/[$,]/g, ''))) {
+    const valStr = String(f.value).toLowerCase().replace(/[$,]/g, '');
+    const spanNorm = ws(f.span).replace(/[$,]/g, '');
+    if (valStr.length >= 2 && !spanNorm.includes(valStr)) {
       // dates may be reformatted; tolerate for date fields, penalize others
       if (!['date_opened', 'dofd'].includes(name)) {
         f.confidence *= 0.7;

@@ -74,16 +74,15 @@ export function classifyErrors(entities, byBureau, opts = {}) {
       }
     }
 
-    // POST_BK: remarks mention bankruptcy but balance > 0
-    for (const m of members) {
-      const t = m.tradeline;
-      const remarks = String(val(t, 'remarks') || '');
-      const bal = val(t, 'balance');
-      if (/bankruptcy|chapter\s*(7|13)/i.test(remarks) && bal > 0) {
-        errors.push(err('POST_BK', ent.id, [m],
-          `Account noted as included in bankruptcy still reports a balance of $${bal}; discharged debts must report zero balance.`,
-          [evd(m, t, 'remarks'), evd(m, t, 'balance')]));
-      }
+    // POST_BK: remarks mention bankruptcy but balance > 0 (one error per entity)
+    const bkMembers = members.filter(m =>
+      /bankruptcy|chapter\s*(7|13)/i.test(String(val(m.tradeline, 'remarks') || '')) &&
+      val(m.tradeline, 'balance') > 0);
+    if (bkMembers.length) {
+      const bal = val(bkMembers[0].tradeline, 'balance');
+      errors.push(err('POST_BK', ent.id, bkMembers,
+        `Account noted as included in bankruptcy still reports a balance of $${bal}; discharged debts must report zero balance.`,
+        bkMembers.flatMap(m => [evd(m, m.tradeline, 'remarks'), evd(m, m.tradeline, 'balance')])));
     }
   }
 
@@ -130,7 +129,8 @@ function tailEq(a, b) {
 function err(type, entity_id, members, explanation, evidence) {
   const conf = Math.min(...members.map(m =>
     Math.min(...Object.values(m.tradeline.fields).map(f => f.confidence), 1)));
-  return { type, entity_id, bureaus: members.map(m => m.bureau), explanation, evidence, confidence: round2(conf) };
+  return { type, entity_id, creditor: members[0]?.tradeline?.fields?.creditor?.value || null,
+           bureaus: members.map(m => m.bureau), explanation, evidence, confidence: round2(conf) };
 }
 function evd(m, t, field) { return { bureau: m.bureau, field, value: val(t, field), span: span(t, field) }; }
 const round2 = (x) => Math.round(x * 100) / 100;
