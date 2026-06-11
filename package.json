@@ -1,0 +1,1 @@
+{"name":"parseur10x-v2-engine","version":"0.1.0","type":"module","scripts":{"eval":"node test/run-eval.js"}}
